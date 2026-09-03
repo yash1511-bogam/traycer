@@ -93,6 +93,7 @@ export type AnalyticsSettingsSection =
   | "general"
   | "host"
   | "keybindings"
+  | "layout"
   | "link-phone"
   | "notifications"
   | "opening-behavior"
@@ -280,6 +281,20 @@ export type AnalyticsSetting =
   | "defaultSelection"
   | "defaultServiceTier"
   | "diffViewerPreferences"
+  // The Layout page's own controls. Dotted rather than camel-cased because
+  // they name a path into one persisted store's slice, not a flat
+  // `settings-store` key: the surface is the middle segment, so a second
+  // surface's rows read as siblings instead of colliding on a verb.
+  | "layout.statusBar.placement"
+  | "layout.statusBar.rateLimits.enabled"
+  | "layout.statusBar.rateLimits.percentMode"
+  | "layout.statusBar.rateLimits.provider"
+  | "layout.statusBar.rateLimits.showBar"
+  | "layout.statusBar.rateLimits.showTimer"
+  | "layout.statusBar.rateLimits.window"
+  | "layout.statusBar.resources.enabled"
+  | "layout.statusBar.resources.metric"
+  | "layout.statusBar.resources.scope"
   | "linkOpen"
   | "pinContextUsageBreakdown"
   | "pointerCursors"
@@ -1130,6 +1145,7 @@ const ANALYTICS_SETTINGS_SECTIONS = new Set<string>(
     general: true,
     host: true,
     keybindings: true,
+    layout: true,
     "link-phone": true,
     notifications: true,
     "opening-behavior": true,
@@ -1145,6 +1161,9 @@ const ANALYTICS_SETTINGS = new Set<string>([
   "allowPrereleaseUpdates",
   "artifactIconColorMode",
   "artifactIconColors",
+  // In the union since the minimap control shipped, but never here, so every
+  // one of its `setting_changed` events was dropped by the sanitizer.
+  "chatTurnMinimapSide",
   "codeFontFamily",
   "codeFontSize",
   "composerMode",
@@ -1154,6 +1173,16 @@ const ANALYTICS_SETTINGS = new Set<string>([
   "defaultSelection",
   "defaultServiceTier",
   "diffViewerPreferences",
+  "layout.statusBar.placement",
+  "layout.statusBar.rateLimits.enabled",
+  "layout.statusBar.rateLimits.percentMode",
+  "layout.statusBar.rateLimits.provider",
+  "layout.statusBar.rateLimits.showBar",
+  "layout.statusBar.rateLimits.showTimer",
+  "layout.statusBar.rateLimits.window",
+  "layout.statusBar.resources.enabled",
+  "layout.statusBar.resources.metric",
+  "layout.statusBar.resources.scope",
   "linkOpen",
   "pinContextUsageBreakdown",
   "pointerCursors",

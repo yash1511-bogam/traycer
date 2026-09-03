@@ -46,6 +46,7 @@ export const ACTION_IDS = [
   "group.focus-editor",
   "tile.find.replace",
   "app.sidebar.toggle",
+  "app.status-bar.toggle",
   "nav.back",
   "nav.forward",
   "app.resources.open",
@@ -106,6 +107,28 @@ export interface ActionMeta {
    */
   readonly terminalPolicy: TerminalPolicy;
   readonly secondaryTerminalPolicy: TerminalPolicy | undefined;
+  /**
+   * Whether the surface this action acts on exists only outside the installed
+   * mobile app (`isMobileApp()`), which makes the action itself unavailable
+   * there: the command palette omits its row and its handler is never
+   * registered, so invoking it is impossible rather than silently inert.
+   *
+   * Both halves READ this field - `isPaletteEligible` in `actions.source.ts`
+   * for the row, and the action's own bridge for the handler (see
+   * `status-bar-keybinding-bridge.tsx`). Neither hard-codes `isMobileApp()`,
+   * so setting the flag on a new action is enough to get both.
+   *
+   * Required rather than optional so every action states the answer - a new
+   * action's author has to decide whether a phone can act on it, and the
+   * common answer (`false`, it works everywhere) is the one being asserted
+   * rather than the one that happened to be left out.
+   *
+   * The Keybindings settings section is already omitted on mobile
+   * (`MOBILE_APP_OMITTED_SECTION_IDS`), so nothing there needs this flag: a
+   * desktop-only action cannot be bound to a chord on a phone in the first
+   * place.
+   */
+  readonly desktopOnly: boolean;
 }
 
 /** The platform-effective default chord for an action (`null` when unbound). */
@@ -140,6 +163,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "tab.switch.byDigit": {
     id: "tab.switch.byDigit",
@@ -152,6 +176,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "epic.new": {
     id: "epic.new",
@@ -163,6 +188,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "shell",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "epic.duplicate-tab": {
     id: "epic.duplicate-tab",
@@ -174,6 +200,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "epic.next": {
     id: "epic.next",
@@ -185,6 +212,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "epic.prev": {
     id: "epic.prev",
@@ -196,6 +224,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "epic.close": {
     id: "epic.close",
@@ -208,6 +237,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "tab.new": {
     id: "tab.new",
@@ -220,6 +250,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "shell",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "tab.close": {
     id: "tab.close",
@@ -232,6 +263,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "shell",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "tab.close-others": {
     id: "tab.close-others",
@@ -244,6 +276,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "shell",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "tab.close-right": {
     id: "tab.close-right",
@@ -257,6 +290,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "tab.close-all": {
     id: "tab.close-all",
@@ -270,6 +304,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "tab.next": {
     id: "tab.next",
@@ -282,6 +317,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "shell",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "tab.prev": {
     id: "tab.prev",
@@ -294,6 +330,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "shell",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "tab.split.add": {
     id: "tab.split.add",
@@ -306,6 +343,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "shell",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "tab.split.swap": {
     id: "tab.split.swap",
@@ -317,6 +355,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "tab.split.separate": {
     id: "tab.split.separate",
@@ -328,6 +367,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "tab.split.close-left": {
     id: "tab.split.close-left",
@@ -339,6 +379,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "tab.split.close-right": {
     id: "tab.split.close-right",
@@ -350,6 +391,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "group.split.horizontal": {
     id: "group.split.horizontal",
@@ -362,6 +404,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "shell",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "group.split.vertical": {
     id: "group.split.vertical",
@@ -374,6 +417,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "group.split-right": {
     id: "group.split-right",
@@ -386,6 +430,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "shell",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "group.focus.up": {
     id: "group.focus.up",
@@ -397,6 +442,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "group.focus.down": {
     id: "group.focus.down",
@@ -408,6 +454,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "group.focus.left": {
     id: "group.focus.left",
@@ -419,6 +466,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "group.focus.right": {
     id: "group.focus.right",
@@ -430,6 +478,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "group.focus-editor": {
     id: "group.focus-editor",
@@ -442,6 +491,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "shell",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "tile.find.replace": {
     id: "tile.find.replace",
@@ -454,6 +504,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "app.sidebar.toggle": {
     id: "app.sidebar.toggle",
@@ -465,6 +516,27 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "shell",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
+  },
+  "app.status-bar.toggle": {
+    id: "app.status-bar.toggle",
+    label: "Toggle status bar",
+    description:
+      "Move usage limits and the resource monitor between the header and the status bar.",
+    category: "app",
+    kind: "chord",
+    // Unbound by default: the surfaces it moves between are both always
+    // reachable, so it earns a palette row rather than one of the few chords
+    // left that a terminal does not want.
+    defaultChord: null,
+    secondaryChord: undefined,
+    terminalPolicy: "shell",
+    secondaryTerminalPolicy: undefined,
+    // The footer is never drawn in the installed mobile app - its header keeps
+    // the usage gauge and the resource monitor - so the placement this flips
+    // has only one reachable value there. See the Layout page's own mobile
+    // collapse (`layout-settings-panel.tsx`), which states the same fact.
+    desktopOnly: true,
   },
   "nav.back": {
     id: "nav.back",
@@ -477,6 +549,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "nav.forward": {
     id: "nav.forward",
@@ -488,6 +561,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "app.resources.open": {
     id: "app.resources.open",
@@ -502,6 +576,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "app.rate-limits.open": {
     id: "app.rate-limits.open",
@@ -513,6 +588,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "app.notifications.open": {
     id: "app.notifications.open",
@@ -530,6 +606,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "app.history.open": {
     id: "app.history.open",
@@ -541,6 +618,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "shell",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "app.settings.open": {
     id: "app.settings.open",
@@ -552,6 +630,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "app.settings.section.byDigit": {
     id: "app.settings.section.byDigit",
@@ -564,6 +643,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "app.palette.open": {
     id: "app.palette.open",
@@ -576,6 +656,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: { mac: "ctrl+shift+p", other: "mod+shift+p" },
     terminalPolicy: "shell",
     secondaryTerminalPolicy: "app",
+    desktopOnly: false,
   },
   "app.terminal.toggle": {
     id: "app.terminal.toggle",
@@ -588,6 +669,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "shell",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "app.terminal.new": {
     id: "app.terminal.new",
@@ -600,6 +682,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "app.browser.new": {
     id: "app.browser.new",
@@ -620,6 +703,12 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     // kind of tab beside one.
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    // Same answer as `app.terminal.new` above, and for the same reason: the
+    // surface both act on is the start page's panel, which the installed
+    // mobile app does render. Whether a browser tab can actually RUN there is
+    // a host-capability question the panel answers at open time, not a reason
+    // to withhold the palette row and the handler.
+    desktopOnly: false,
   },
   "app.terminal.maximize": {
     id: "app.terminal.maximize",
@@ -634,6 +723,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "shell",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "app.zoom.in": {
     id: "app.zoom.in",
@@ -645,6 +735,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "app.zoom.out": {
     id: "app.zoom.out",
@@ -656,6 +747,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "app.zoom.reset": {
     id: "app.zoom.reset",
@@ -667,6 +759,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "composer.dictation.toggle": {
     id: "composer.dictation.toggle",
@@ -683,6 +776,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "composer.stash": {
     id: "composer.stash",
@@ -695,6 +789,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "shell",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "composer.model-picker.toggle": {
     id: "composer.model-picker.toggle",
@@ -710,6 +805,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "model.provider.byDigit": {
     id: "model.provider.byDigit",
@@ -722,6 +818,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "model.reasoning.byDigit": {
     id: "model.reasoning.byDigit",
@@ -734,6 +831,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
   "model.profile.byDigit": {
     id: "model.profile.byDigit",
@@ -746,6 +844,7 @@ export const ACTION_META: Readonly<Record<ActionId, ActionMeta>> = {
     secondaryChord: undefined,
     terminalPolicy: "app",
     secondaryTerminalPolicy: undefined,
+    desktopOnly: false,
   },
 };
 export function getDefaultBindings(): Readonly<

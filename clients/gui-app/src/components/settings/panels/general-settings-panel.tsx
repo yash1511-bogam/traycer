@@ -38,24 +38,6 @@ function trackGeneralSetting(setting: AnalyticsSetting): void {
 export function GeneralSettingsPanel() {
   const navigate = useNavigate();
   const restartOnboarding = useOnboardingStore((s) => s.restart);
-  const showGlobalResourceMonitor = useSettingsStore(
-    (s) => s.showGlobalResourceMonitor,
-  );
-  const setShowGlobalResourceMonitor = useSettingsStore(
-    (s) => s.setShowGlobalResourceMonitor,
-  );
-  const showNavigatorResourceStats = useSettingsStore(
-    (s) => s.showNavigatorResourceStats,
-  );
-  const setShowNavigatorResourceStats = useSettingsStore(
-    (s) => s.setShowNavigatorResourceStats,
-  );
-  const pinContextUsageBreakdown = useSettingsStore(
-    (s) => s.pinContextUsageBreakdown,
-  );
-  const setPinContextUsageBreakdown = useSettingsStore(
-    (s) => s.setPinContextUsageBreakdown,
-  );
   const quoteReplyEnabled = useSettingsStore((s) => s.quoteReplyEnabled);
   const setQuoteReplyEnabled = useSettingsStore((s) => s.setQuoteReplyEnabled);
   const steerOnModEnterEnabled = useSettingsStore(
@@ -115,64 +97,15 @@ export function GeneralSettingsPanel() {
               />
             }
           />
-          <SettingsRow
-            label="Pin context usage breakdown"
-            anchor="general-pin-context-usage"
-            description="Keep the context window breakdown visible near the chat composer when usage data is available."
-            control={
-              <Switch
-                checked={pinContextUsageBreakdown}
-                onCheckedChange={(value) => {
-                  trackGeneralSetting("pinContextUsageBreakdown");
-                  setPinContextUsageBreakdown(value);
-                }}
-                aria-label="Pin context usage breakdown"
-              />
-            }
-          />
         </SettingsGroup>
 
         <BrowserSettingsSection />
 
-        <SettingsGroup
-          title="Running agents"
-          anchor="general-running-agents"
-          tone="default"
-          dataTestId={undefined}
-          fill={false}
-        >
-          <PreventSleepSettingsSection />
-          <SettingsRow
-            label="Show global resources button"
-            anchor="general-global-resources-button"
-            description="Show the app-wide resource monitor in the header."
-            control={
-              <Switch
-                checked={showGlobalResourceMonitor}
-                onCheckedChange={(value) => {
-                  trackGeneralSetting("showGlobalResourceMonitor");
-                  setShowGlobalResourceMonitor(value);
-                }}
-                aria-label="Show global resources button"
-              />
-            }
-          />
-          <SettingsRow
-            label="Show navigator resource stats"
-            anchor="general-navigator-resource-stats"
-            description="Show compact live CPU and memory chips in task navigator rows."
-            control={
-              <Switch
-                checked={showNavigatorResourceStats}
-                onCheckedChange={(value) => {
-                  trackGeneralSetting("showNavigatorResourceStats");
-                  setShowNavigatorResourceStats(value);
-                }}
-                aria-label="Show navigator resource stats"
-              />
-            }
-          />
-        </SettingsGroup>
+        {/* Carries its own "Running agents" group: one row is left in it after
+          the two resource-visibility toggles moved to Layout, and that row
+          hides itself on builds with no power bridge - so the heading has to
+          go with it rather than be gated a second time here. */}
+        <PreventSleepSettingsSection />
 
         <SettingsGroup
           title="Worktrees"
