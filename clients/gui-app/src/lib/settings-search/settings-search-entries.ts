@@ -782,6 +782,17 @@ export const SETTINGS_SEARCH_ENTRIES: ReadonlyArray<SettingsSearchEntry> = [
   },
   {
     section: "layout",
+    anchor: "layout-status-bar-mode-word",
+    kind: "setting",
+    availableWhen: isStatusBarControlsAvailable,
+    label: "Show used / remaining label",
+    description:
+      "Spell out the word after each percentage. Off leaves the number alone.",
+    group: "Status bar",
+    keywords: ["word", "suffix", "used", "remaining", "percent"],
+  },
+  {
+    section: "layout",
     anchor: "layout-status-bar-reset-timer",
     kind: "setting",
     availableWhen: isStatusBarControlsAvailable,
