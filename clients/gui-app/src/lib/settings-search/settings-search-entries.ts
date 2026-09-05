@@ -772,7 +772,7 @@ export const SETTINGS_SEARCH_ENTRIES: ReadonlyArray<SettingsSearchEntry> = [
     kind: "group",
     availableWhen: isStatusBarControlsAvailable,
     label: "Usage limits",
-    description: "One segment per provider with a window still reporting.",
+    description: "One segment per provider with a limit still reporting.",
     group: "Status bar",
     keywords: [
       "rate limits",
@@ -789,7 +789,7 @@ export const SETTINGS_SEARCH_ENTRIES: ReadonlyArray<SettingsSearchEntry> = [
       "mini bar",
       "fill bar",
       "gauge",
-      "show all windows",
+      "show all limits",
       "windows",
       "5h",
       "weekly",
