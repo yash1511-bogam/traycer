@@ -901,6 +901,38 @@ export const SETTINGS_SEARCH_ENTRIES: ReadonlyArray<SettingsSearchEntry> = [
     group: "Sidebar",
     keywords: ["cpu", "memory", "ram", "navigator resource stats"],
   },
+  // Both the panel list and the narrow-window note that stands in for it
+  // carry this anchor, so the result lands on whichever the window draws.
+  // The per-panel rows inside it are not indexed: they are the rail's own
+  // registry rendered as rows, and their names ride here as keywords.
+  {
+    section: "layout",
+    anchor: "layout-sidebar-panels",
+    kind: "group",
+    availableWhen: alwaysAvailable,
+    label: "Panels",
+    description:
+      "Drag to reorder, or drop a panel onto another to stack them into one tabbed panel. Uncheck a panel to keep it out of the rail.",
+    group: "Sidebar",
+    keywords: [
+      "reorder",
+      "order",
+      "drag",
+      "tabbed",
+      "stack",
+      "hide panel",
+      "visibility",
+      "agents",
+      "terminals",
+      "browsers",
+      "artifacts",
+      "git diff",
+      "pull requests",
+      "file tree",
+      "sharing",
+      "comments",
+    ],
+  },
 
   // --------------------------------------------------------------- Sessions
   {
