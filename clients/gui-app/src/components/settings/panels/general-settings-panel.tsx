@@ -46,8 +46,6 @@ export function GeneralSettingsPanel() {
   const setSteerOnModEnterEnabled = useSettingsStore(
     (s) => s.setSteerOnModEnterEnabled,
   );
-  const homeTabEnabled = useSettingsStore((s) => s.homeTabEnabled);
-  const setHomeTabEnabled = useSettingsStore((s) => s.setHomeTabEnabled);
   const compact = useSettingsDensity() === "compact";
   const featureSettings = useRunnerFeatureSettingsQuery();
   const setAgentRoles = useRunnerAgentRolesSet();
@@ -108,32 +106,6 @@ export function GeneralSettingsPanel() {
           hides itself on builds with no power bridge - so the heading has to
           go with it rather than be gated a second time here. */}
         <PreventSleepSettingsSection />
-
-        {/* Layout lives here only until the app grows a page of its own for
-            it; the row moves there wholesale, store key and all. */}
-        <SettingsGroup
-          title="Layout"
-          anchor="general-layout"
-          tone="default"
-          dataTestId={undefined}
-          fill={false}
-        >
-          <SettingsRow
-            label="Home tab"
-            anchor="general-home-tab"
-            description="Show a fixed Home tab with everything running across your tasks."
-            control={
-              <Switch
-                checked={homeTabEnabled}
-                onCheckedChange={(value) => {
-                  trackGeneralSetting("homeTabEnabled");
-                  setHomeTabEnabled(value);
-                }}
-                aria-label="Home tab"
-              />
-            }
-          />
-        </SettingsGroup>
 
         <SettingsGroup
           title="Worktrees"

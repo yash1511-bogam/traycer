@@ -219,27 +219,6 @@ export const SETTINGS_SEARCH_ENTRIES: ReadonlyArray<SettingsSearchEntry> = [
   },
   {
     section: "general",
-    anchor: "general-layout",
-    kind: "group",
-    availableWhen: alwaysAvailable,
-    label: "Layout",
-    description: null,
-    group: null,
-    keywords: ["tabs", "tab strip", "chrome"],
-  },
-  {
-    section: "general",
-    anchor: "general-home-tab",
-    kind: "setting",
-    availableWhen: alwaysAvailable,
-    label: "Home tab",
-    description:
-      "Show a fixed Home tab with everything running across your tasks.",
-    group: "Layout",
-    keywords: ["home", "tab strip", "overview", "focus view", "running"],
-  },
-  {
-    section: "general",
     anchor: "general-worktrees",
     kind: "group",
     availableWhen: alwaysAvailable,
@@ -835,6 +814,29 @@ export const SETTINGS_SEARCH_ENTRIES: ReadonlyArray<SettingsSearchEntry> = [
       "host",
       "desktop app",
     ],
+  },
+  // Every build draws what this group governs (the mobile app has no strip,
+  // but its nav drawer leads with the Home tab), so nothing here is gated.
+  {
+    section: "layout",
+    anchor: "layout-tabs",
+    kind: "group",
+    availableWhen: alwaysAvailable,
+    label: "Tabs",
+    description: null,
+    group: null,
+    keywords: ["tab strip", "tab bar", "top-level tabs"],
+  },
+  {
+    section: "layout",
+    anchor: "layout-home-tab",
+    kind: "setting",
+    availableWhen: alwaysAvailable,
+    label: "Home tab",
+    description:
+      "Show a fixed Home tab with everything running across your tasks.",
+    group: "Tabs",
+    keywords: ["home", "tab strip", "overview", "focus view", "running"],
   },
   {
     section: "layout",
