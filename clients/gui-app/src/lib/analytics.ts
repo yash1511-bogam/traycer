@@ -285,6 +285,7 @@ export type AnalyticsSetting =
   | "defaultSelection"
   | "defaultServiceTier"
   | "diffViewerPreferences"
+  | "homeTabEnabled"
   // The Layout page's own controls. Dotted rather than camel-cased because
   // they name a path into one persisted store's slice, not a flat
   // `settings-store` key: the surface is the middle segment, so a second
@@ -1190,6 +1191,7 @@ const ANALYTICS_SETTINGS = new Set<string>([
   "defaultSelection",
   "defaultServiceTier",
   "diffViewerPreferences",
+  "homeTabEnabled",
   "layout.sidebar.panelOrder",
   "layout.sidebar.panelVisibility",
   "layout.sidebar.resetOrder",

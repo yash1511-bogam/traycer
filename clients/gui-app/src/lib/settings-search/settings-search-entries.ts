@@ -219,6 +219,27 @@ export const SETTINGS_SEARCH_ENTRIES: ReadonlyArray<SettingsSearchEntry> = [
   },
   {
     section: "general",
+    anchor: "general-layout",
+    kind: "group",
+    availableWhen: alwaysAvailable,
+    label: "Layout",
+    description: null,
+    group: null,
+    keywords: ["tabs", "tab strip", "chrome"],
+  },
+  {
+    section: "general",
+    anchor: "general-home-tab",
+    kind: "setting",
+    availableWhen: alwaysAvailable,
+    label: "Home tab",
+    description:
+      "Show a fixed Home tab with everything running across your tasks.",
+    group: "Layout",
+    keywords: ["home", "tab strip", "overview", "focus view", "running"],
+  },
+  {
+    section: "general",
     anchor: "general-worktrees",
     kind: "group",
     availableWhen: alwaysAvailable,
