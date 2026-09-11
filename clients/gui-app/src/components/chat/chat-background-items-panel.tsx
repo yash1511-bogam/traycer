@@ -1,16 +1,6 @@
 import { useId, useMemo, useState } from "react";
 import { useDraggable } from "@dnd-kit/core";
-import {
-  AlarmClock,
-  Bot,
-  ChevronDown,
-  Monitor,
-  PauseCircle,
-  Plug,
-  Square,
-  TerminalSquare,
-  Workflow,
-} from "lucide-react";
+import { ChevronDown, PauseCircle, Square } from "lucide-react";
 import type { BackgroundItem } from "@traycer/protocol/host/agent/gui/subscribe";
 import {
   Collapsible,
@@ -23,6 +13,7 @@ import { ConfirmDestructiveDialog } from "@/components/ui/confirm-destructive-di
 import { LivePulse } from "@/components/ui/live-pulse";
 import { LiveElapsed } from "@/components/chat/segments/segment-elapsed";
 import { useChatDockSectionRevealed } from "@/components/chat/chat-dock-compact-context";
+import { BACKGROUND_KIND_ICONS } from "@/components/chat/background-kind-icon";
 import { useTabHostId } from "@/components/epic-canvas/hooks/use-tab-host-id";
 import { ManagedCommandMonitorIcon } from "@/components/managed-commands/managed-command-monitor-icon";
 import { ManagedCommandStopAction } from "@/components/managed-commands/managed-command-lifecycle-actions";
@@ -94,33 +85,8 @@ function backgroundStopLabel(kind: BackgroundItem["kind"]): string {
 }
 
 function BackgroundKindIcon(props: { readonly kind: BackgroundItem["kind"] }) {
-  switch (props.kind) {
-    case "subagent":
-      return <Bot aria-hidden className="size-3.5 shrink-0 text-primary/80" />;
-    case "command":
-      return (
-        <TerminalSquare
-          aria-hidden
-          className="size-3.5 shrink-0 text-primary/80"
-        />
-      );
-    case "monitor":
-      return (
-        <Monitor aria-hidden className="size-3.5 shrink-0 text-primary/80" />
-      );
-    case "wakeup":
-      return (
-        <AlarmClock aria-hidden className="size-3.5 shrink-0 text-primary/80" />
-      );
-    case "workflow":
-      return (
-        <Workflow aria-hidden className="size-3.5 shrink-0 text-primary/80" />
-      );
-    case "mcp":
-      return <Plug aria-hidden className="size-3.5 shrink-0 text-primary/80" />;
-  }
-  const unreachableKind: never = props.kind;
-  return unreachableKind;
+  const Icon = BACKGROUND_KIND_ICONS[props.kind];
+  return <Icon aria-hidden className="size-3.5 shrink-0 text-primary/80" />;
 }
 
 function itemScheduledFor(item: BackgroundItem): number | null {
