@@ -985,11 +985,19 @@ export const SETTINGS_SEARCH_ENTRIES: ReadonlyArray<SettingsSearchEntry> = [
     anchor: "layout-sidebar-resource-chips",
     kind: "setting",
     availableWhen: alwaysAvailable,
-    label: "Show resource chips on sidebar rows",
-    description:
-      "Show compact live CPU and memory chips in task navigator rows.",
+    label: "Resource chips on sidebar rows",
+    description: "Show compact live readings in task navigator rows.",
     group: "Sidebar",
-    keywords: ["cpu", "memory", "ram", "navigator resource stats"],
+    // The per-reading chips are this row's own control, so their names ride
+    // on it rather than being anchors of their own.
+    keywords: [
+      "cpu",
+      "memory",
+      "ram",
+      "processes",
+      "readings",
+      "navigator resource stats",
+    ],
   },
   // Both the panel list and the narrow-window note that stands in for it
   // carry this anchor, so the result lands on whichever the window draws.
