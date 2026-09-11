@@ -12,6 +12,7 @@ import {
   useLayoutStore,
   type ComposerCompactableMode,
   type ComposerHideableMode,
+  type ComposerReasoningIndicator,
 } from "@/stores/settings/layout-store";
 
 const COMPACTABLE_OPTIONS: ReadonlyArray<
@@ -26,6 +27,14 @@ const HIDEABLE_OPTIONS: ReadonlyArray<
 > = [
   { value: "visible", label: "Visible" },
   { value: "hidden", label: "Hidden" },
+];
+
+const REASONING_INDICATOR_OPTIONS: ReadonlyArray<
+  SettingsSegmentedOption<ComposerReasoningIndicator>
+> = [
+  { value: "text", label: "Text" },
+  { value: "bars", label: "Bars" },
+  { value: "bars-text", label: "Bars + text" },
 ];
 
 /**
@@ -57,6 +66,9 @@ export function ComposerLayoutGroup(): ReactNode {
   const setMic = useLayoutStore((state) => state.setComposerMic);
   const setCompactButton = useLayoutStore(
     (state) => state.setComposerCompactButton,
+  );
+  const setReasoningIndicator = useLayoutStore(
+    (state) => state.setComposerReasoningIndicator,
   );
 
   return (
@@ -179,6 +191,22 @@ export function ComposerLayoutGroup(): ReactNode {
               setCompactButton(mode);
             }}
             ariaLabel="Compact conversation"
+          />
+        }
+      />
+      <SettingsRow
+        label="Reasoning level"
+        anchor="layout-composer-reasoning-indicator"
+        description="How the model chip shows the thinking effort. Bars draws one bar per level the model offers, filled up to the current one; the level's name stays in the chip's tooltip."
+        control={
+          <SettingsSegmentedControl
+            value={composer.reasoningIndicator}
+            options={REASONING_INDICATOR_OPTIONS}
+            onChange={(indicator) => {
+              trackLayoutSetting("layout.composer.reasoningIndicator");
+              setReasoningIndicator(indicator);
+            }}
+            ariaLabel="Reasoning level"
           />
         }
       />
