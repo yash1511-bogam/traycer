@@ -912,10 +912,13 @@ export const SETTINGS_SEARCH_ENTRIES: ReadonlyArray<SettingsSearchEntry> = [
     group: null,
     keywords: ["messages", "conversation", "pane"],
   },
+  // A subgroup: its title switch hides the Fields row beneath it, so that row
+  // is not a target of its own and its vocabulary - the field names the strip
+  // can print - rides here.
   {
     section: "layout",
     anchor: "layout-pin-context-breakdown",
-    kind: "setting",
+    kind: "group",
     availableWhen: alwaysAvailable,
     label: "Pin context breakdown",
     description:
@@ -926,7 +929,24 @@ export const SETTINGS_SEARCH_ENTRIES: ReadonlyArray<SettingsSearchEntry> = [
       "tokens",
       "usage",
       "pin context usage breakdown",
+      "fields",
+      "used",
+      "fresh",
+      "cache read",
+      "cache write",
+      "output",
     ],
+  },
+  {
+    section: "layout",
+    anchor: "layout-context-indicator",
+    kind: "setting",
+    availableWhen: alwaysAvailable,
+    label: "Context indicator",
+    description:
+      "How the chip beside the composer shows the context window left while the breakdown is not pinned.",
+    group: "Chat",
+    keywords: ["chip", "ring", "text", "gauge", "context left", "composer"],
   },
   {
     section: "layout",
