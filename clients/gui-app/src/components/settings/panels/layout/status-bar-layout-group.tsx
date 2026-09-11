@@ -352,7 +352,7 @@ function UsageDisplaySubgroup(): ReactNode {
       />
       <SettingsRow
         label="Show mini bar"
-        description="Draw a small fill bar ahead of each provider's limits."
+        description="Draw a small fill bar ahead of each limit."
         control={
           <Switch
             checked={rateLimits.showBar}
