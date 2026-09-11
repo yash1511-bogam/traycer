@@ -59,7 +59,7 @@ import {
 import { accumulatedDiffTotals } from "@/lib/chat/accumulated-change-rows";
 import {
   backgroundHeaderSummary,
-  backgroundRestingKind,
+  backgroundKind,
   backgroundRunningRowCount,
   dedupeByTaskId,
 } from "@/lib/chat/background-item-tree";
@@ -665,13 +665,13 @@ function useChatDockChrome(input: ChatDockChromeInput): ChatDockChrome {
       }),
     [backgroundRunning, input.heldManagedCommands, dedupedBackgroundItems],
   );
-  // The chip's icon when nothing is running - a held shell, a pending wake -
-  // is the kind's own, so the chip reads as what it stands for. Running and
-  // held shells are counted together: the sets overlap, and one of either is
-  // enough to put a shell row in the section.
-  const backgroundRestingGlyph = useMemo(
+  // The chip's icon is the kind's own, running or not, so it always reads as
+  // what it stands for - activity pulses that icon rather than replacing it.
+  // Running and held shells are counted together: the sets overlap, and one of
+  // either is enough to put a shell row in the section.
+  const backgroundGlyph = useMemo(
     () =>
-      backgroundRestingKind({
+      backgroundKind({
         items: dedupedBackgroundItems,
         hasManagedCommands:
           input.runningManagedCommands.length > 0 ||
@@ -743,6 +743,7 @@ function useChatDockChrome(input: ChatDockChromeInput): ChatDockChrome {
       models.push({
         section: "filesChanged",
         glyph: "filesChanged",
+        working: false,
         text: changeCountsShortForm(changeTotals, changedFileCount),
         label: `Files changed. ${fileCountPhrase(changedFileCount)}, ${changeTotals.additions} added and ${changeTotals.deletions} removed.`,
         // Constant, so this fires on the chip's arrival and never again -
@@ -757,7 +758,8 @@ function useChatDockChrome(input: ChatDockChromeInput): ChatDockChrome {
     if (agentsChip) {
       models.push({
         section: "activeAgents",
-        glyph: agentsWorking ? "working" : "activeAgents",
+        glyph: "activeAgents",
+        working: agentsWorking,
         text:
           receivedAgentCount > 0
             ? `${agentsRunningCount} · ${receivedAgentCount}`
@@ -775,7 +777,8 @@ function useChatDockChrome(input: ChatDockChromeInput): ChatDockChrome {
     if (backgroundChip) {
       models.push({
         section: "background",
-        glyph: backgroundRunning > 0 ? "working" : backgroundRestingGlyph,
+        glyph: backgroundGlyph,
+        working: backgroundRunning > 0,
         text: `${backgroundRunning}`,
         // The number on the chip is the running count, but the section can be
         // on screen for a held shell or a pending wake with nothing running at
@@ -791,7 +794,7 @@ function useChatDockChrome(input: ChatDockChromeInput): ChatDockChrome {
     agentsChip,
     backgroundChip,
     backgroundSummary,
-    backgroundRestingGlyph,
+    backgroundGlyph,
     changeTotals,
     changedFileCount,
     agentsRunningCount,
