@@ -938,6 +938,24 @@ export const SETTINGS_SEARCH_ENTRIES: ReadonlyArray<SettingsSearchEntry> = [
   },
   {
     section: "layout",
+    anchor: "layout-composer-reasoning-indicator",
+    kind: "setting",
+    availableWhen: alwaysAvailable,
+    label: "Reasoning level",
+    description:
+      "How the model chip shows the thinking effort. Bars draws one bar per level the model offers, filled up to the current one; the level's name stays in the chip's tooltip.",
+    group: "Composer",
+    keywords: [
+      "thinking",
+      "effort",
+      "reasoning",
+      "bars",
+      "signal",
+      "model chip",
+    ],
+  },
+  {
+    section: "layout",
     anchor: "layout-chat",
     kind: "group",
     availableWhen: alwaysAvailable,
