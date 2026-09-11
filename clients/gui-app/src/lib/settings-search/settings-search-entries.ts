@@ -840,6 +840,17 @@ export const SETTINGS_SEARCH_ENTRIES: ReadonlyArray<SettingsSearchEntry> = [
   },
   {
     section: "layout",
+    anchor: "layout-home-density",
+    kind: "setting",
+    availableWhen: alwaysAvailable,
+    label: "Home density",
+    description:
+      "Row spacing on the Home tab. Compact keeps touch targets on phones.",
+    group: "Tabs",
+    keywords: ["home", "density", "compact", "rows"],
+  },
+  {
+    section: "layout",
     anchor: "layout-composer",
     kind: "group",
     availableWhen: alwaysAvailable,
