@@ -728,6 +728,37 @@ export const SETTINGS_SEARCH_ENTRIES: ReadonlyArray<SettingsSearchEntry> = [
   },
   {
     section: "layout",
+    anchor: "layout-presets",
+    kind: "group",
+    availableWhen: alwaysAvailable,
+    label: "Presets",
+    description: null,
+    group: null,
+    keywords: ["preset", "compact", "detailed", "reset", "defaults"],
+  },
+  {
+    section: "layout",
+    anchor: "layout-presets-choice",
+    kind: "setting",
+    availableWhen: alwaysAvailable,
+    label: "Preset",
+    description:
+      "Apply one set of detail preferences to every group below. Placement and the sidebar's panel arrangement are left as they are - only Reset restores those. Custom means the current values match no preset.",
+    group: "Presets",
+    // The reset button has no anchor of its own - it sits in this row's own
+    // control - so the words a user searches for it with ride here.
+    keywords: [
+      "preset",
+      "compact",
+      "detailed",
+      "reset",
+      "defaults",
+      "restore",
+      "compact view",
+    ],
+  },
+  {
+    section: "layout",
     anchor: "layout-status-bar",
     kind: "group",
     availableWhen: alwaysAvailable,
