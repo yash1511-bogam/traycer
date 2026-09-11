@@ -789,6 +789,11 @@ export const SETTINGS_SEARCH_ENTRIES: ReadonlyArray<SettingsSearchEntry> = [
       "mini bar",
       "fill bar",
       "gauge",
+      "limits",
+      "checkbox",
+      "tightest limit",
+      "automatic",
+      // The control this replaced, kept so the old name still routes here.
       "show all limits",
       "windows",
       "5h",
